@@ -107,14 +107,89 @@ const [ordersLoading, setOrdersLoading] = useState(true);
 //   fetchOrders();
 // }, []);
 
+
+
+
+
+
+// useEffect(() => {
+//   const fetchOrders = async () => {
+//     try {
+//       const res = await axios.get("/api/booking", {
+//         withCredentials: true, // needed if you're using cookies
+//       });
+
+//       // Attach washerman name and amount to each order if missing
+//       const updatedOrders = res.data.map(order => ({
+//         ...order,
+//         laundryman: order.laundryman || order.laundrymanName || "",
+//         total: order.total || order.totalAmount || 0,
+//       }));
+
+//       setOrders(updatedOrders);
+
+//       // Calculate totalSpent correctly
+//       const totalSpent = updatedOrders.reduce((sum, order) => {
+//         return sum + (typeof order.total === "number" ? order.total : Number(order.total) || 0);
+//       }, 0);
+
+//       console.log("Total Spent:", totalSpent);
+//     } catch (err) {
+//       console.error("Error fetching orders", err);
+//     } finally {
+//       setOrdersLoading(false);
+//     }
+//   };
+
+//   const token = localStorage.getItem("token");
+
+//   const fetchProfile = async () => {
+//     try {
+//       const res = await axios.get("/api/user/currentuser", {
+//         headers: {
+//           Authorization: `Bearer ${token}`
+//         }
+//       });
+
+//       // setProfile({
+//       //   name: res.data.name,
+//       //   email: res.data.email,
+//       //   contact: res.data.contact,
+//       //   image: "/src/profile.png",
+//       //   _id: res.data._id, // store ID for update route
+//       // });
+
+//           setProfile({
+//       name: res.data.name,
+//       email: res.data.email,
+//       contact: res.data.contact,
+//       image: res.data.image || "/placeholder.svg", // ✅ fixed
+//       address: res.data.address,
+//       _id: res.data._id,
+//     });
+
+//     } catch (err) {
+//       console.error("Failed to fetch profile:", err);
+//     }
+//   };
+
+//   fetchProfile();
+//   fetchOrders();
+// }, []);
+ 
+
+
 useEffect(() => {
+  const token = localStorage.getItem("token");
+
   const fetchOrders = async () => {
     try {
       const res = await axios.get("/api/booking", {
-        withCredentials: true, // needed if you're using cookies
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      // Attach washerman name and amount to each order if missing
       const updatedOrders = res.data.map(order => ({
         ...order,
         laundryman: order.laundryman || order.laundrymanName || "",
@@ -123,7 +198,6 @@ useEffect(() => {
 
       setOrders(updatedOrders);
 
-      // Calculate totalSpent correctly
       const totalSpent = updatedOrders.reduce((sum, order) => {
         return sum + (typeof order.total === "number" ? order.total : Number(order.total) || 0);
       }, 0);
@@ -136,33 +210,22 @@ useEffect(() => {
     }
   };
 
-  const token = localStorage.getItem("token");
-
   const fetchProfile = async () => {
     try {
       const res = await axios.get("/api/user/currentuser", {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      // setProfile({
-      //   name: res.data.name,
-      //   email: res.data.email,
-      //   contact: res.data.contact,
-      //   image: "/src/profile.png",
-      //   _id: res.data._id, // store ID for update route
-      // });
-
-          setProfile({
-      name: res.data.name,
-      email: res.data.email,
-      contact: res.data.contact,
-      image: res.data.image || "/placeholder.svg", // ✅ fixed
-      address: res.data.address,
-      _id: res.data._id,
-    });
-
+      setProfile({
+        name: res.data.name,
+        email: res.data.email,
+        contact: res.data.contact,
+        image: res.data.image || "/placeholder.svg",
+        address: res.data.address,
+        _id: res.data._id,
+      });
     } catch (err) {
       console.error("Failed to fetch profile:", err);
     }
@@ -171,7 +234,7 @@ useEffect(() => {
   fetchProfile();
   fetchOrders();
 }, []);
- 
+
 
   // Enhanced Services and Pricing
   const services = [
