@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 // import React, { useEffect, useState } from 'react';
 import axios from '../utilss/axios'; // Adjust the import path as necessary 
-import {apiFetch } from '../utilss/apiFetch'; // Adjust the import path as necessary
+import {apiFetch } from '../utilss/apifetch'; // Adjust the import path as necessary
 
 import "./CustomerDashboard.css"
 
