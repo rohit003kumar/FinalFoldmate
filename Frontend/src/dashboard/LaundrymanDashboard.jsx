@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Loader2, Clock, CheckCircle, Save } from 'lucide-react'
 import { GoogleMap, useJsApiLoader, Circle, Marker } from '@react-google-maps/api';
 import axios from '../utilss/axios'; // Adjust the import path as necessary
-import { apiFetch } from "../utilss/apiFetch";
+import { apiFetch } from "../utilss/apifetch";
 import "./LaundrymanDashboard.css"
 
 const Calendars = ({ selected, onSelect }) => {
