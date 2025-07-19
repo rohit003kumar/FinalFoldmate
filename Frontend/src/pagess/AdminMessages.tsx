@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { apiFetch } from '../utilss/apifetch'; // Adjust the import path as necessary
 
 const AdminMessages = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin')
+    apiFetch('/api/admin')
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

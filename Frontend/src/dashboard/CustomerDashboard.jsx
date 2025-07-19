@@ -6,7 +6,8 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
 // import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../utilss/axios'; // Adjust the import path as necessary 
+import {apiFetch } from '../utilss/apiFetch'; // Adjust the import path as necessary
 
 import "./CustomerDashboard.css"
 
@@ -109,7 +110,7 @@ const [ordersLoading, setOrdersLoading] = useState(true);
 useEffect(() => {
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/booking", {
+      const res = await axios.get("/api/booking", {
         withCredentials: true, // needed if you're using cookies
       });
 
@@ -139,7 +140,7 @@ useEffect(() => {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/user/currentuser", {
+      const res = await axios.get("/api/user/currentuser", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -435,7 +436,7 @@ const handleSaveProfile = async () => {
     }
 
     const res = await axios.put(
-      `http://localhost:5000/api/user/${profile._id}`,
+      `/api/user/${profile._id}`,
       updatedProfile,
       {
         headers: {
@@ -640,7 +641,7 @@ const handleDetectLocation = () => {
         const token = localStorage.getItem("token");
         if (token) {
           try {
-            const saveResponse = await fetch("http://localhost:5000/api/user/location", {  
+            const saveResponse = await apiFetch("/api/user/location", {  
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -700,7 +701,7 @@ const handleDetectLocation = () => {
     setIsLaundrymenLoading(true);
     setLaundrymenError(null);
     try {
-      const response = await fetch(`http://localhost:5000/api/washer/nearby?lat=${location.lat}&lng=${location.lng}`);   
+      const response = await apiFetch(`/api/washer/nearby?lat=${location.lat}&lng=${location.lng}`);   
       if (!response.ok) throw new Error('Failed to fetch laundrymen');
       const data = await response.json();
       const laundrymen = Array.isArray(data) ? data : [];
@@ -1041,7 +1042,7 @@ const handleDetectLocation = () => {
 
 const confirmLogout = async () => {
   try {
-    await fetch('/api/auth/logout', {
+    await apiFetch('/api/auth/logout', {
       method: 'POST',
       credentials: 'include',
     });

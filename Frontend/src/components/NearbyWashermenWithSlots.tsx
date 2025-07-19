@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker, useJsApiLoader, Circle } from '@react-google-maps/api';
 import { saveCustomerLocation, getCurrentLocation, calculateDistance } from '../utils/locationUtils';
+import { apiFetch } from '../utilss/apifetch';
 
 interface Washerman {
   _id: string;
@@ -64,10 +65,10 @@ const NearbyWashermenWithSlots: React.FC = () => {
       console.log('Fetching nearby washermen for coordinates:', lat, lng);
       
       const url = selectedDate 
-        ? `http://localhost:5000/api/washer/nearby?lat=${lat}&lng=${lng}&date=${selectedDate}`    
-        : `http://localhost:5000/api/washer/nearby?lat=${lat}&lng=${lng}`;                  
+        ? `/api/washer/nearby?lat=${lat}&lng=${lng}&date=${selectedDate}`    
+        : `/api/washer/nearby?lat=${lat}&lng=${lng}`;                  
       
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

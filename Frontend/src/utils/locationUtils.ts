@@ -1,6 +1,7 @@
 
 
 // locationUtils.ts
+import { apiFetch } from "../utilss/apifetch";
 
 // ✅ Save customer's location to backend
 export const saveCustomerLocation = async (
@@ -14,7 +15,7 @@ export const saveCustomerLocation = async (
       return false;
     }
 
-    const res = await fetch("http://localhost:5000/api/user/location", {    
+    const res = await apiFetch("/api/user/location", {    
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -72,7 +73,7 @@ export const getCustomerSavedLocation = async (): Promise<
     const token = localStorage.getItem("token");
     if (!token) return null;
 
-    const res = await fetch("http://localhost:5000/api/user/location", {   
+    const res = await apiFetch("/api/user/location", {   
       method: "GET",   
       headers: {
         Authorization: `Bearer ${token}`,

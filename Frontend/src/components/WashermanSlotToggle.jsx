@@ -5,7 +5,7 @@
 
 // WashermanSlotToggle.tsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from '../utilss/axios'; // Adjust the import path as necessary 
 import {
   Clock,
   Save,
@@ -30,7 +30,7 @@ const WashermanSlotToggle = () => {
         setLoading(true);
         setError(null);
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/show/slot-templates", {
+        const res = await axios.get("/api/show/slot-templates", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setSlotTemplates(res.data);
@@ -82,7 +82,7 @@ const WashermanSlotToggle = () => {
             maxBookings: maxBookingInputs[date]?.[s.range] || 1,
           })),
       };
-      await axios.post("http://localhost:5000/api/show/slots/washer", payload, {
+      await axios.post("/api/show/slots/washer", payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSavedStates((prev) => ({ ...prev, [date]: true }));

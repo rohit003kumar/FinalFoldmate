@@ -5,8 +5,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CreditCard, Truck, Check, ArrowLeft, Shield, Copy } from 'lucide-react';
-import axios from 'axios';
+// import axios from 'axios'
 import Swal from 'sweetalert2';
+import axios from '/utilss/axios';
 
 function PaymentPage() {
   const location = useLocation();
@@ -59,7 +60,7 @@ function PaymentPage() {
     const fetchOrderSummary = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/booking/summary', {
+        const res = await axios.get('/api/booking/summary', {
           headers: { Authorization: `Bearer ${token}` }
         });
         const { deliveryFee, total } = res.data;
@@ -92,7 +93,7 @@ function PaymentPage() {
       const token = localStorage.getItem('token');
 
       const response = await axios.post(
-        `http://localhost:5000/api/booking/create/${productId}`,
+        `/api/booking/create/${productId}`,
         {
           totalAmount: total,
           slot: pickupTimeSlot,

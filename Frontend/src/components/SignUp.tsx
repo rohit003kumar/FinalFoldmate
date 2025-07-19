@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, User, WashingMachine, Phone } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { apiFetch } from '../utilss/apifetch'; // Adjust the import path as necessary
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -51,7 +52,7 @@ const SignUp: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await apiFetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

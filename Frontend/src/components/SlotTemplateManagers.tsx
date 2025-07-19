@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../utilss/axios"; // Adjust the import path as necessary
 import {
   Calendar,
   Clock,
@@ -76,7 +76,7 @@ const SlotTemplateManager = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/slots",
+        "/api/slots",
         { dates: selectedDates, slots },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -99,7 +99,7 @@ const SlotTemplateManager = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/slot-templates", {
+      const res = await axios.get("/api/slot-templates", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllSlotTemplates(res.data);

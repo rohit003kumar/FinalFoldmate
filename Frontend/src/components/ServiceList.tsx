@@ -9,6 +9,7 @@
 import React, { useState,useEffect } from 'react';
 import { Edit3, Trash2, Plus, Search, Camera, Save, X } from 'lucide-react';
 import { Service } from './Types/Servicee';
+import { apiFetch } from '../utilss/apifetch';
 
 interface ServiceListProps {
   services: Service[];
@@ -51,11 +52,11 @@ useEffect(() => {
     const role = localStorage.getItem('role');
 
     const endpoint = role === 'washerman'
-      ? 'http://localhost:5000/api/product/my-products'
-      : 'http://localhost:5000/api/product/all';
+      ? '/api/product/my-products'
+      : '/api/product/all';
 
     try {
-      const response = await fetch(endpoint, {
+      const response = await apiFetch(endpoint, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,7 +99,7 @@ useEffect(() => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('Authentication token not found');
 
-      const response = await fetch(`/api/product/${editingId}`, {
+      const response = await apiFetch(`/api/product/${editingId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -136,7 +137,7 @@ const handleDelete = async (id: string) => {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Authentication token not found');
 
-    const response = await fetch(`/api/product/${id}`, {
+    const response = await apiFetch(`/api/product/${id}`, {
       method: 'DELETE', // Using POST instead of DELETE
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -469,6 +470,8 @@ const handleDelete = async (id: string) => {
     </div>
   );
 }
+
+
 
 
 

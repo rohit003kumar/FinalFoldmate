@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Camera, Plus, ArrowLeft, Tag, Shirt } from 'lucide-react';
 import { Service } from './Types/Servicee';
+import { apiFetch } from '../utilss/apifetch';
 
 interface ServiceFormProps {
   onSubmit: (service: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>) => void;
@@ -70,7 +71,7 @@ export default function ServiceForm({ onSubmit, onBack }: ServiceFormProps) {
       Object.entries(formData).forEach(([key, value]) => data.append(key, value));
       data.append('image', photo);
 
-      const res = await fetch('http://localhost:5000/api/product/create', {
+      const res = await apiFetch('/api/product/create', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

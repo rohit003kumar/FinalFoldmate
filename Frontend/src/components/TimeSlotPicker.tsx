@@ -3,7 +3,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../utilss/axios'; // Adjust the import path as necessary
 import { Clock } from 'lucide-react';
 
 export interface TimeSlot {
@@ -62,7 +62,7 @@ export default function TimeSlotPicker({
 
       setLoading(true);
       try {
-        const res = await axios.get('http://localhost:5000/api/show/available-slots', {
+        const res = await axios.get('/api/show/available-slots', {
           params: { washermanId, date: selectedDate },
         });
 

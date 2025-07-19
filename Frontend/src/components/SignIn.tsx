@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, WashingMachine } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { apiFetch } from '../utilss/apifetch';
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -37,7 +38,7 @@ const SignIn: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await apiFetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +206,7 @@ const SignIn: React.FC = () => {
 
       if (email) {
         try {
-          const response = await fetch('/api/auth/forgot-password', {
+          const response = await apiFetch('/api/auth/forgot-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email }),

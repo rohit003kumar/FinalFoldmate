@@ -43,7 +43,8 @@ import SlotTemplateManagers from "./components/SlotTemplateManagers"
 import SlotTemplateManager from "./components/SlotTemplateManager"
 import WashermanSlotToggle from "./components/WashermanSlotToggle"
 import type { Servicee } from "./components/Types/Servicee"
-import axios from "axios"
+import axios from '../src/utilss/axios.js' // Adjust the import path as necessary
+import { apiFetch } from "./utilss/apifetch"
 import ResetPassword from "./pagess/resetPassword";
 import AdminMessages from './pagess/AdminMessages'; // adjust path if needed
 
@@ -211,7 +212,7 @@ const handleDetectLocation = () => {
         if (token) {
           try {
             await axios.post(
-              "http://localhost:5000/api/user/location",
+              "/api/user/location",
               {
                 lat: latitude, // ✅ fixed field
                 lng: longitude, // ✅ fixed field
@@ -273,7 +274,7 @@ const handleManualLocation = async (address) => {
       if (token) {
         try {
           await axios.post(
-            "http://localhost:5000/api/user/location",
+            "/api/user/location",
             {
               lat: location.lat, // ✅ fixed field
               lng: location.lng, // ✅ fixed field
@@ -564,7 +565,7 @@ function WashermanServicesApp() {
     const fetchServices = async () => {
       try {
         const token = localStorage.getItem("token")
-        const res = await fetch("/api/product/all", {
+        const res = await apiFetch("/api/product/all", {
           headers: { Authorization: `Bearer ${token}` },
         })
         const data = await res.json()
@@ -579,7 +580,7 @@ function WashermanServicesApp() {
   const handleAddService = async (serviceData: Omit<Servicee, "_id" | "createdAt" | "updatedAt">) => {
     try {
       const token = localStorage.getItem("token")
-      const response = await fetch("/api/product", {
+      const response = await apiFetch("/api/product", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

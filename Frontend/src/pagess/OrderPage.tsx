@@ -7,7 +7,7 @@ import OrderCard from '../components/OrderCard';
 import OrderSkeleton from '../components/OrderSkeleton';
 // import { getEnhancedMockOrders } from '../data/mockOrders';
 import { ShoppingBag } from 'lucide-react';
-import axios from 'axios';
+import axios from '../utilss/axios'; // Adjust the import path as necessary
 
 const OrderHistory: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -18,7 +18,7 @@ const OrderHistory: React.FC = () => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:5000/api/booking", {
+        const res = await axios.get("/api/booking", {
           withCredentials: true,
         });
         console.log("Fetched orders:", res.data);

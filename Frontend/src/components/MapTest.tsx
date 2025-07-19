@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, Plus, RefreshCw, Database } from 'lucide-react';
+import { apiFetch } from '../utilss/apifetch';
 
 interface MapTestProps {
   onLocationSelect: (lat: number, lng: number) => void;
@@ -22,7 +23,7 @@ const MapTest: React.FC<MapTestProps> = ({ onLocationSelect }) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
 
-          const response = await fetch('http://localhost:5000/api/washer/sample', {
+          const response = await apiFetch('/api/washer/sample', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ const MapTest: React.FC<MapTestProps> = ({ onLocationSelect }) => {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/washer/all-locations');
+      const response = await apiFetch('/api/washer/all-locations');
       
       if (response.ok) {
         const data = await response.json();
@@ -97,7 +98,7 @@ const MapTest: React.FC<MapTestProps> = ({ onLocationSelect }) => {
         }
       ];
 
-      const response = await fetch('http://localhost:5000/api/slots', {
+      const response = await apiFetch('/api/slots', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

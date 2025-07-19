@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Loader2, Clock, CheckCircle, Save } from 'lucide-react'
 import { GoogleMap, useJsApiLoader, Circle, Marker } from '@react-google-maps/api';
-import axios from 'axios';
+import axios from '../utilss/axios'; // Adjust the import path as necessary
+import { apiFetch } from "../utilss/apiFetch";
 import "./LaundrymanDashboard.css"
 
 const Calendars = ({ selected, onSelect }) => {
@@ -374,7 +375,7 @@ const LaundrymanDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5000/api/booking/${orderId}/status`,
+        `/api/booking/${orderId}/status`,
         { status: newStatus },
         {
           headers: {
@@ -401,7 +402,7 @@ const LaundrymanDashboard = () => {
     if (!confirmPayment) return;
 
     try {
-      const response = await fetch(`/api/booking/orders/${orderId}/mark-paid`, {
+      const response = await apiFetch(`/api/booking/orders/${orderId}/mark-paid`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -634,7 +635,7 @@ const LaundrymanDashboard = () => {
 
       // Update both location and washerman status
       const response = await axios.put(
-        `http://localhost:5000/api/user/${profile._id}`,
+        `/api/user/${profile._id}`,
         {
           location: {
             type: "Point",
@@ -733,7 +734,7 @@ const LaundrymanDashboard = () => {
       }
 
       const response = await axios.get(
-        `http://localhost:5000/api/location/customers-near-laundryman?lat=${latitude}&lng=${longitude}&range=${serviceRadius * 1000}`,
+        `/api/location/customers-near-laundryman?lat=${latitude}&lng=${longitude}&range=${serviceRadius * 1000}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -759,7 +760,7 @@ const LaundrymanDashboard = () => {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/user/currentuser", {
+      const res = await axios.get("/api/user/currentuser", {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -800,7 +801,7 @@ const LaundrymanDashboard = () => {
     console.log('Fetching assigned orders with token:', token);
 
     try {
-      const res = await axios.get("http://localhost:5000/api/booking/assigned", {
+      const res = await axios.get("/api/booking/assigned", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -856,7 +857,7 @@ const LaundrymanDashboard = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `http://localhost:5000/api/user/${profile._id}`,
+        `/api/user/${profile._id}`,
         updatedData,
         {
           headers: {
@@ -1942,7 +1943,7 @@ const WashermanSlotToggle = () => {
         setError(null);
         const token = localStorage.getItem("token");
 
-        const res = await axios.get("http://localhost:5000/api/show/slot-templates", {
+        const res = await axios.get("/api/show/slot-templates", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -1982,7 +1983,7 @@ const WashermanSlotToggle = () => {
         localStorage.setItem("washermanEnabledSlots", JSON.stringify(filteredEnabled));
         localStorage.setItem("washermanMaxBookingInputs", JSON.stringify(filteredMax));
 
-        const bookingRes = await axios.get("http://localhost:5000/api/show/slot-booking-counts", {
+        const bookingRes = await axios.get("/api/show/slot-booking-counts", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCurrentBookingCounts(bookingRes.data || {});
@@ -2084,7 +2085,7 @@ const WashermanSlotToggle = () => {
           })),
       };
 
-      await axios.post("http://localhost:5000/api/show/slots/washer", payload, {
+      await axios.post("/api/show/slots/washer", payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

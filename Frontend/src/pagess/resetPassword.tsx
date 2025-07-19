@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import { apiFetch } from '../utilss/apifetch';
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -21,7 +22,7 @@ const ResetPassword = () => {
     }
 
     try {
-     const res = await fetch(`http://localhost:5000/api/auth/reset-password/${token}`, {
+     const res = await apiFetch(`/api/auth/reset-password/${token}`, {
   method: 'PUT',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ newPassword: password }),

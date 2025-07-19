@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FaqSection from '../components/about/FaqSection';
+import { apiFetch } from '../utilss/apifetch'; // Adjust the import path as necessary
 
 const Contact = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -20,7 +21,7 @@ const Contact = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:5000/api/contact', {
+      const res = await apiFetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

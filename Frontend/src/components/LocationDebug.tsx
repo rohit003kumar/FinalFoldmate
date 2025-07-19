@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { saveCustomerLocation, getCurrentLocation, getCustomerSavedLocation } from '../utils/locationUtils';
+import { apiFetch } from '../utilss/apifetch';
 
 const LocationDebug: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -17,7 +18,7 @@ const LocationDebug: React.FC = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/user/currentuser', {
+      const res = await apiFetch('/api/user/currentuser', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

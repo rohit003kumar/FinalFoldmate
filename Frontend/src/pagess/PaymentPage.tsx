@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Truck, Check, ArrowLeft } from 'lucide-react';
-import axios from 'axios';
+import axios from '../utilss/axios'; // Adjust the import path as necessary
 import Swal from 'sweetalert2';
 
 function PaymentPage() {
@@ -65,7 +65,7 @@ function PaymentPage() {
       const token = localStorage.getItem('token');
 
       await axios.post(
-        'http://localhost:5000/api/booking/create-multi',
+        '/api/booking/create-multi',
         {
           items: cartItems.map(item => ({
             productId: item.service?._id || item.productId,

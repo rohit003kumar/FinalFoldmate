@@ -4,7 +4,7 @@ import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import "./AdminDashboard.css"
 import { useEffect } from "react"
-import axios from "axios"
+import axios from "../utilss/axios" // Adjust the import path as necessary  
 import { Menu, X } from "lucide-react"
 
 const AdminDashboard = () => {
@@ -187,7 +187,7 @@ const AdminDashboard = () => {
 
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/user/currentuser", {
+        const res = await axios.get("/api/user/currentuser", {
           headers: { Authorization: `Bearer ${token}` }
         });
         const user = res.data;
@@ -207,7 +207,7 @@ const AdminDashboard = () => {
     const fetchCustomers = async () => {
       try {
         console.log("Fetching customers...");
-        const res = await axios.get("http://localhost:5000/api/user/", {
+        const res = await axios.get("/api/user/", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCustomers(res.data || []);
@@ -219,7 +219,7 @@ const AdminDashboard = () => {
     const fetchLaundrymen = async () => {
       try {
         console.log("Fetching laundrymen...");
-        const res = await axios.get("http://localhost:5000/api/washerman/dashboard/all", {
+        const res = await axios.get("/api/washerman/dashboard/all", {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -266,7 +266,7 @@ const AdminDashboard = () => {
 
     const fetchAllBookings = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/booking/all", {
+        const res = await axios.get("/api/booking/all", {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -310,7 +310,7 @@ const AdminDashboard = () => {
   const fetchTimeSlots = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/slot-templates", {
+      const res = await axios.get("/api/slot-templates", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -339,7 +339,7 @@ const AdminDashboard = () => {
         time: newSlot.slot,
         period: newSlot.slot
       };
-      await axios.post("http://localhost:5000/api/slot", payload);
+      await axios.post("/api/slot", payload);
       await fetchTimeSlots();
     } catch (err) {
       console.error("Add failed", err);
@@ -2117,7 +2117,7 @@ const SlotTemplateManager = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/slots",
+        "/api/slots",
         { dates: selectedDates, slots },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -2134,7 +2134,7 @@ const SlotTemplateManager = () => {
   const fetchAllSlotTemplates = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/slot-templates", {
+      const res = await axios.get("/api/slot-templates", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAllSlotTemplates(res.data);
