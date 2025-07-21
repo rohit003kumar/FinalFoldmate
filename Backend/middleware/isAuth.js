@@ -137,31 +137,71 @@
 
 const jwt = require('jsonwebtoken');
 
+// const isAuth = (req, res, next) => {
+//   try {
+//     let token;
+
+//     // ✅ 1. Extract token from header or cookies
+//     if (req.headers.authorization?.startsWith("Bearer ")) {
+//       token = req.headers.authorization.split(" ")[1];
+//     } else if (req.cookies?.token) {
+//       token = req.cookies.token;
+//     }
+
+//     // ❌ No token found
+//     if (!token) {
+//       return res.status(401).json({ message: "No token provided" });
+//     }
+
+//     // ✅ 2. Verify token
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+//     // ✅ 3. Attach user info to request
+//     req.userId = decoded.userId || decoded.id; // Flexible decoding
+//     req.userRole = decoded.role;
+
+//     next();
+//   } catch (err) {
+//     return res.status(403).json({
+//       message: "Unauthorized",
+//       error: err.message || "Invalid token"
+//     });
+//   }
+// };
+
+
+
+
+
+
+
 const isAuth = (req, res, next) => {
   try {
     let token;
 
-    // ✅ 1. Extract token from header or cookies
+    console.log("Auth Header:", req.headers.authorization);
+    console.log("Cookies:", req.cookies);
+
     if (req.headers.authorization?.startsWith("Bearer ")) {
       token = req.headers.authorization.split(" ")[1];
     } else if (req.cookies?.token) {
       token = req.cookies.token;
     }
 
-    // ❌ No token found
     if (!token) {
+      console.log("❌ No token found");
       return res.status(401).json({ message: "No token provided" });
     }
 
-    // ✅ 2. Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("✅ Token decoded:", decoded);
 
-    // ✅ 3. Attach user info to request
-    req.userId = decoded.userId || decoded.id; // Flexible decoding
+    req.userId = decoded.userId || decoded.id;
     req.userRole = decoded.role;
 
     next();
   } catch (err) {
+    console.log("❌ Token verification failed:", err.message);
     return res.status(403).json({
       message: "Unauthorized",
       error: err.message || "Invalid token"
