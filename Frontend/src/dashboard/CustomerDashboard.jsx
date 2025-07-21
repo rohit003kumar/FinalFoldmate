@@ -262,7 +262,7 @@ useEffect(() => {
 
       console.log("Total Spent:", totalSpent);
     } catch (err) {
-      console.error("Error fetching orders", err);
+       console.error("Error fetching orders:", err?.response?.data || err.message);
     } finally {
       setOrdersLoading(false);
     }
