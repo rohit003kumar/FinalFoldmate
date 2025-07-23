@@ -14,24 +14,48 @@ const OrderHistory: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get("/api/booking", {
-          withCredentials: true,
-        });
-        console.log("Fetched orders:", res.data);
-        setOrders(res.data); // Make sure response is an array
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const res = await axios.get("/api/booking", {
+  //         withCredentials: true,
+  //       });
+  //       console.log("Fetched orders:", res.data);
+  //       setOrders(res.data); // Make sure response is an array
+  //     } catch (error) {
+  //       console.error("Error fetching orders:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchOrders();
-  }, []);
+  //   fetchOrders();
+  // }, []);
+
+useEffect(() => {
+  const fetchOrders = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token"); // ✅ get token
+      const res = await axios.get("/api/booking", {
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ pass token
+        },
+        withCredentials: true, // ✅ keep if backend needs cookies
+      });
+      console.log("Fetched orders:", res.data);
+      setOrders(res.data);
+    } catch (error) {
+      console.error("Error fetching orders:", error?.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchOrders();
+}, []);
+
 
   return (
     <div className="min-h-screen bg-gray-50">
