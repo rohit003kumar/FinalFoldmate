@@ -87,7 +87,7 @@ const [ordersLoading, setOrdersLoading] = useState(true);
 
   
   const [availableServices, setAvailableServices] = useState([]);
-  const [activePage, setActivePage] = useState("Book");
+ 
 
 // Orders State - Updated with Confirmed status
 
