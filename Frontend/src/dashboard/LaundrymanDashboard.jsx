@@ -397,42 +397,76 @@ const LaundrymanDashboard = () => {
 
 
 
-  const handlePaymentStatusUpdate = async (orderId) => {
-    const confirmPayment = window.confirm("Are you sure you received the cash?");
-    if (!confirmPayment) return;
+  // const handlePaymentStatusUpdate = async (orderId) => {
+  //   const confirmPayment = window.confirm("Are you sure you received the cash?");
+  //   if (!confirmPayment) return;
 
-    try {
-      const response = await apiFetch(`/api/booking/orders/${orderId}/mark-paid`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-           "Authorization": `Bearer ${token}`,  // ✅ Add this line
-        },
-      });
+  //   try {
+  //     const response = await apiFetch(`/api/booking/orders/${orderId}/mark-paid`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //          "Authorization": `Bearer ${token}`,  // ✅ Add this line
+  //       },
+  //     });
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (data.success) {
-        alert("✅ Payment marked as paid!");
-        // Update the UI — for example:
-        setAssignedOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order._id === orderId
-              ? { ...order, paymentStatus: "paid" }
-              : order
-          )
-        );
-      } else {
-        alert("❌ Could not mark payment as paid.");
-      }
-    } catch (error) {
-      console.error("Error updating payment:", error);
-      alert("⚠️ Something went wrong.");
+  //     if (data.success) {
+  //       alert("✅ Payment marked as paid!");
+  //       // Update the UI — for example:
+  //       setAssignedOrders((prevOrders) =>
+  //         prevOrders.map((order) =>
+  //           order._id === orderId
+  //             ? { ...order, paymentStatus: "paid" }
+  //             : order
+  //         )
+  //       );
+  //     } else {
+  //       alert("❌ Could not mark payment as paid.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating payment:", error);
+  //     alert("⚠️ Something went wrong.");
+  //   }
+  // };
+
+
+
+const handlePaymentStatusUpdate = async (orderId) => {
+  const confirmPayment = window.confirm("Are you sure you received the cash?");
+  if (!confirmPayment) return;
+
+  try {
+    const token = localStorage.getItem("token"); // ✅ FIX: define token here
+
+    const response = await apiFetch(`/api/booking/orders/${orderId}/mark-paid`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // ✅ Include token
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("✅ Payment marked as paid!");
+      setAssignedOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId
+            ? { ...order, paymentStatus: "paid" }
+            : order
+        )
+      );
+    } else {
+      alert("❌ Could not mark payment as paid.");
     }
-  };
-
-
-
+  } catch (error) {
+    console.error("Error updating payment:", error);
+    alert("⚠️ Something went wrong.");
+  }
+};
 
 
   const getDayFromDate = (dateString) => {
