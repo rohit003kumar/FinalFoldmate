@@ -85,7 +85,7 @@ const [ordersLoading, setOrdersLoading] = useState(true);
   const [orderTotal, setOrderTotal] = useState(0)
 
 
-    const [customerLocation, setCustomerLocation] = useState(null);
+  
   const [availableServices, setAvailableServices] = useState([]);
   const [activePage, setActivePage] = useState("Book");
 
