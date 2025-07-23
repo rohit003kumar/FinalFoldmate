@@ -83,6 +83,7 @@ const [ordersLoading, setOrdersLoading] = useState(true);
   const [selectedClothes, setSelectedClothes] = useState([])
   const [paymentMethod, setPaymentMethod] = useState("cod")
   const [orderTotal, setOrderTotal] = useState(0)
+const [availableServices, setAvailableServices] = useState([]);
 
 // Orders State - Updated with Confirmed status
 
