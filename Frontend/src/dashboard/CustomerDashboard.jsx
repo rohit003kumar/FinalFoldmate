@@ -1380,6 +1380,38 @@ const cancelLogout = () => {
       </div>
 
       {/* You can continue with Step 2 here */}
+      {/* Step 2: Choose a Service */}
+<div className="booking-step">
+  <div className="step-header">
+    <span className="step-number">2</span>
+    <h3>Choose Laundry Service</h3>
+  </div>
+
+  <div className="service-list">
+    {availableServices.length > 0 ? (
+      availableServices.map(service => (
+        <div key={service._id} className="service-item">
+          <h4>{service.name}</h4>
+          <p>{service.description}</p>
+          <p>
+            Options:
+            {service.options.map(option => (
+              <span key={option.id} className="service-option">
+                {option.name} - ₹{option.price}
+              </span>
+            ))}
+          </p>
+          <button onClick={() => handleSelectService(service)}>
+            Select Service
+          </button>
+        </div>
+      ))
+    ) : (
+      <p>No services available in your area yet.</p>
+    )}
+  </div>
+</div>
+
     </div>
   </div>
 )}
