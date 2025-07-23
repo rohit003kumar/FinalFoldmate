@@ -240,31 +240,33 @@ const [ordersLoading, setOrdersLoading] = useState(true);
 //   fetchOrders();
 // }, []);
 
-
+// 1. Save to localStorage once location is set
 useEffect(() => {
-    const stored = localStorage.getItem("customerLocation");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      setCustomerLocation(parsed);
+  if (customerLocation) {
+    localStorage.setItem("customerLocation", JSON.stringify(customerLocation));
+  }
+}, [customerLocation]);
 
-      axios
-        .get("/api/customer/nearby-services", {
-          params: {
-            latitude: parsed.latitude,
-            longitude: parsed.longitude,
-          },
-        })
-        .then((res) => setAvailableServices(res.data))
-        .catch((err) => console.error("Failed to fetch services:", err));
-    } else {
-      console.warn("Location not found in localStorage");
-    }
-  }, []);
+// 2. Load location from localStorage and fetch services
+useEffect(() => {
+  const stored = localStorage.getItem("customerLocation");
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    setCustomerLocation(parsed);
 
-  const handleSelectService = (service) => {
-    // Add service selection logic (e.g., add to cart or proceed to next step)
-    console.log("Selected service:", service);
-  };
+    axios
+      .get("/api/customer/nearby-services", {
+        params: {
+          latitude: parsed.latitude,
+          longitude: parsed.longitude,
+        },
+      })
+      .then((res) => setAvailableServices(res.data))
+      .catch((err) => console.error("Failed to fetch services:", err));
+  } else {
+    console.warn("Location not found in localStorage");
+  }
+}, []);
 
 
   
@@ -1377,7 +1379,7 @@ const cancelLogout = () => {
 
 
 
-  {activePage === "Book" && (
+{activePage === "Book" && (
   <div className="book-page">
     <div className="book-header">
       <h2>Book Laundry Service</h2>
@@ -1385,6 +1387,7 @@ const cancelLogout = () => {
     </div>
 
     <div className="booking-steps">
+
       {/* Step 1: Location */}
       <div className="booking-step">
         <div className="step-header">
@@ -1394,13 +1397,15 @@ const cancelLogout = () => {
 
         <div className="location-section">
           <div className="location-controls">
-            <button
-              className="detect-location-btn"
-              onClick={handleDetectLocation}
-              disabled={isDetectingLocation}
-            >
-              {isDetectingLocation ? "Detecting..." : "📍 Use Current Location"}
-            </button>
+            {!customerLocation && (
+              <button
+                className="detect-location-btn"
+                onClick={handleDetectLocation}
+                disabled={isDetectingLocation}
+              >
+                {isDetectingLocation ? "Detecting..." : "📍 Use Current Location"}
+              </button>
+            )}
           </div>
 
           {customerLocation && (
@@ -1413,42 +1418,42 @@ const cancelLogout = () => {
         </div>
       </div>
 
-      {/* You can continue with Step 2 here */}
       {/* Step 2: Choose a Service */}
-<div className="booking-step">
-  <div className="step-header">
-    <span className="step-number">2</span>
-    <h3>Choose Laundry Service</h3>
-  </div>
-
-  <div className="service-list">
-    {availableServices.length > 0 ? (
-      availableServices.map(service => (
-        <div key={service._id} className="service-item">
-          <h4>{service.name}</h4>
-          <p>{service.description}</p>
-          <p>
-            Options:
-            {service.options.map(option => (
-              <span key={option.id} className="service-option">
-                {option.name} - ₹{option.price}
-              </span>
-            ))}
-          </p>
-          <button onClick={() => handleSelectService(service)}>
-            Select Service
-          </button>
+      <div className="booking-step">
+        <div className="step-header">
+          <span className="step-number">2</span>
+          <h3>Choose Laundry Service</h3>
         </div>
-      ))
-    ) : (
-      <p>No services available in your area yet.</p>
-    )}
-  </div>
-</div>
+
+        <div className="service-list">
+          {availableServices.length > 0 ? (
+            availableServices.map((service) => (
+              <div key={service._id} className="service-item">
+                <h4>{service.name}</h4>
+                <p>{service.description}</p>
+                <p>
+                  Options:
+                  {service.options.map((option) => (
+                    <span key={option.id} className="service-option">
+                      {option.name} - ₹{option.price}
+                    </span>
+                  ))}
+                </p>
+                <button onClick={() => handleSelectService(service)}>
+                  Select Service
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>No services available in your area yet.</p>
+          )}
+        </div>
+      </div>
 
     </div>
   </div>
 )}
+
 
 
         {activePage === "Orders" && (
