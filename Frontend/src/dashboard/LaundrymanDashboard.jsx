@@ -406,6 +406,7 @@ const LaundrymanDashboard = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+           "Authorization": `Bearer ${token}`,  // ✅ Add this line
         },
       });
 
