@@ -83,7 +83,11 @@ const [ordersLoading, setOrdersLoading] = useState(true);
   const [selectedClothes, setSelectedClothes] = useState([])
   const [paymentMethod, setPaymentMethod] = useState("cod")
   const [orderTotal, setOrderTotal] = useState(0)
-const [availableServices, setAvailableServices] = useState([]);
+
+
+    const [customerLocation, setCustomerLocation] = useState(null);
+  const [availableServices, setAvailableServices] = useState([]);
+  const [activePage, setActivePage] = useState("Book");
 
 // Orders State - Updated with Confirmed status
 
@@ -235,6 +239,35 @@ const [availableServices, setAvailableServices] = useState([]);
 //   fetchProfile();
 //   fetchOrders();
 // }, []);
+
+
+useEffect(() => {
+    const stored = localStorage.getItem("customerLocation");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setCustomerLocation(parsed);
+
+      axios
+        .get("/api/customer/nearby-services", {
+          params: {
+            latitude: parsed.latitude,
+            longitude: parsed.longitude,
+          },
+        })
+        .then((res) => setAvailableServices(res.data))
+        .catch((err) => console.error("Failed to fetch services:", err));
+    } else {
+      console.warn("Location not found in localStorage");
+    }
+  }, []);
+
+  const handleSelectService = (service) => {
+    // Add service selection logic (e.g., add to cart or proceed to next step)
+    console.log("Selected service:", service);
+  };
+
+
+  
 
 useEffect(() => {
   const token = localStorage.getItem("token");
