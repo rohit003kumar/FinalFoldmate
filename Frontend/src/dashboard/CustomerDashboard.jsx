@@ -239,7 +239,30 @@ useEffect(() => {
   const token = localStorage.getItem("token");
   console.log("Token from localStorage:", token);
 
-  const fetchOrders = async () => {
+ 
+  const fetchProfile = async () => {
+    try {
+      const res = await axios.get("/api/user/currentuser", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      setProfile({
+        name: res.data.name,
+        email: res.data.email,
+        contact: res.data.contact,
+        image: res.data.image || "/placeholder.svg",
+        address: res.data.address,
+        _id: res.data._id,
+      });
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+    }
+  };
+
+ const fetchOrders = async () => {
     try {
       const res = await axios.get("/api/booking", {
         headers: {
@@ -268,27 +291,6 @@ useEffect(() => {
     }
   };
 
-  const fetchProfile = async () => {
-    try {
-      const res = await axios.get("/api/user/currentuser", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
-
-      setProfile({
-        name: res.data.name,
-        email: res.data.email,
-        contact: res.data.contact,
-        image: res.data.image || "/placeholder.svg",
-        address: res.data.address,
-        _id: res.data._id,
-      });
-    } catch (err) {
-      console.error("Failed to fetch profile:", err);
-    }
-  };
 
   fetchProfile();
   fetchOrders();
