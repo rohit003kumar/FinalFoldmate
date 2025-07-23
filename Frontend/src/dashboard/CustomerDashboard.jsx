@@ -268,7 +268,7 @@ useEffect(() => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        // withCredentials: true, // Include this if backend uses cookies
+        withCredentials: true, // Include this if backend uses cookies
       });
 
       const updatedOrders = res.data.map(order => ({
