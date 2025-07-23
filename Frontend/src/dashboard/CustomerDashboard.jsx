@@ -1383,7 +1383,7 @@ const cancelLogout = () => {
 )}
 
 
-        {activePage === "Orders" && (
+{/*         {activePage === "Orders" && (
           <div className="orders-page">
             <div className="orders-header">
               <h2>My Orders</h2>
@@ -1473,7 +1473,7 @@ const cancelLogout = () => {
             </div>
           </div>
         )}
-
+ */}
     {activePage === "Profile" && (
   <div className="profile-page">
     <div className="profile-header">
