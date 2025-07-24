@@ -311,7 +311,7 @@ export default function Navbar({
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
+{/*         {isMobileMenuOpen && (
           <div className="md:hidden bg-white p-4 shadow-lg rounded-md">
             <ul className="space-y-4">
               <li><Link to="/" className="block text-slate-700 hover:text-blue-600">Home</Link></li>
@@ -322,37 +322,78 @@ export default function Navbar({
                 <MapPin className="w-4 h-4 mr-1" /> Map
               </Link></li> */}
 
-              {!isLoggedIn ? (
-                <>
-                  <li><Link to="/signin" className="block text-slate-700 hover:text-blue-600">Sign In</Link></li>
-                  <li><Link to="/signup" className="block text-slate-700 hover:text-blue-600">Sign Up</Link></li>
-                </>
-              ) : (
-                <li><Link to="/customerdashboard" className="block text-slate-700 hover:text-blue-600">Dashboard</Link></li>
-              )}
+        //       {!isLoggedIn ? (
+        //         <>
+        //           <li><Link to="/signin" className="block text-slate-700 hover:text-blue-600">Sign In</Link></li>
+        //           <li><Link to="/signup" className="block text-slate-700 hover:text-blue-600">Sign Up</Link></li>
+        //         </>
+        //       ) : (
+        //         <li><Link to="/customerdashboard" className="block text-slate-700 hover:text-blue-600">Dashboard</Link></li>
+        //       )}
 
-              <li>
-                <button
-                  onClick={onCartClick}
-                  className="relative flex items-center text-slate-700 hover:text-blue-600"
-                >
-                  <ShoppingCart className="w-5 h-5 mr-1" />
-                  Cart
-                  {cartItemCount && cartItemCount > 0 && (
-                    <span className="ml-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </button>
-              </li>
-            </ul>
+        //       <li>
+        //         <button
+        //           onClick={onCartClick}
+        //           className="relative flex items-center text-slate-700 hover:text-blue-600"
+        //         >
+        //           <ShoppingCart className="w-5 h-5 mr-1" />
+        //           Cart
+        //           {cartItemCount && cartItemCount > 0 && (
+        //             <span className="ml-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+        //               {cartItemCount}
+        //             </span>
+        //           )}
+        //         </button>
+        //       </li>
+        //     </ul>
 
-            {/* Mobile Install Button */}
-            <div className="mt-4">
-              <InstallPWAButton />
-            </div>
-          </div>
-        )}
+        //     {/* Mobile Install Button */}
+        //     <div className="mt-4">
+        //       <InstallPWAButton />
+        //     </div>
+        //   </div>
+        // )} */}
+
+{isMobileMenuOpen && (
+  <div className="md:hidden bg-white p-4 shadow-lg rounded-md overflow-auto max-h-[80vh]">
+    <ul className="space-y-4">
+      <li><Link to="/" className="block text-slate-700 hover:text-blue-600">Home</Link></li>
+      <li><Link to="/about" className="block text-slate-700 hover:text-blue-600">About</Link></li>
+      <li><Link to="/contact" className="block text-slate-700 hover:text-blue-600">Contact</Link></li>
+      <li><Link to="/orders" className="block text-slate-700 hover:text-blue-600">Order</Link></li>
+
+      {!isLoggedIn ? (
+        <>
+          <li><Link to="/signin" className="block text-slate-700 hover:text-blue-600">Sign In</Link></li>
+          <li><Link to="/signup" className="block text-slate-700 hover:text-blue-600">Sign Up</Link></li>
+        </>
+      ) : (
+        <li><Link to="/customerdashboard" className="block text-slate-700 hover:text-blue-600">Dashboard</Link></li>
+      )}
+
+      <li>
+        <button
+          onClick={onCartClick}
+          className="relative flex items-center text-slate-700 hover:text-blue-600"
+        >
+          <ShoppingCart className="w-5 h-5 mr-1" />
+          Cart
+          {cartItemCount && cartItemCount > 0 && (
+            <span className="ml-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              {cartItemCount}
+            </span>
+          )}
+        </button>
+      </li>
+    </ul>
+
+    {/* Mobile Install Button */}
+    <div className="mt-4">
+      <InstallPWAButton />
+    </div>
+  </div>
+)}
+
       </div>
     </nav>
   );
