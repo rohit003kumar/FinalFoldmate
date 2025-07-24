@@ -318,9 +318,9 @@ export default function Navbar({
               <li><Link to="/about" className="block text-slate-700 hover:text-blue-600">About</Link></li>
               <li><Link to="/contact" className="block text-slate-700 hover:text-blue-600">Contact</Link></li>
               <li><Link to="/orders" className="block text-slate-700 hover:text-blue-600">Order</Link></li>
-              <li><Link to="/NearbyWashermenMap" className="flex items-center text-slate-700 hover:text-blue-600">
+{/*               <li><Link to="/NearbyWashermenMap" className="flex items-center text-slate-700 hover:text-blue-600">
                 <MapPin className="w-4 h-4 mr-1" /> Map
-              </Link></li>
+              </Link></li> */}
 
               {!isLoggedIn ? (
                 <>
