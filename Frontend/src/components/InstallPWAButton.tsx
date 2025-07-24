@@ -49,72 +49,65 @@
 
 
 
-
-
 import { useEffect, useState } from 'react';
 
 const InstallPWAButton = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [showButton, setShowButton] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
-  const [isInStandaloneMode, setIsInStandaloneMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
-    // Check for iOS
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
-    const standalone = 'standalone' in window.navigator && (window.navigator as any).standalone;
+    const isAndroidDevice = /android/.test(userAgent);
+    const isMobileDevice = isIOSDevice || isAndroidDevice;
 
     setIsIOS(isIOSDevice);
-    setIsInStandaloneMode(standalone);
+    setIsMobile(isMobileDevice);
+    setIsStandalone(
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as any).standalone
+    );
 
-    // Check for Android install prompt
     const handler = (e: any) => {
-      console.log("📦 'beforeinstallprompt' fired");
       e.preventDefault();
       setDeferredPrompt(e);
-      setShowButton(true);
     };
 
     window.addEventListener('beforeinstallprompt', handler);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler);
-    };
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   const handleInstallClick = () => {
-    if (!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-
-    deferredPrompt.userChoice.then((choiceResult: any) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('✅ User accepted the install prompt');
-      } else {
-        console.log('❌ User dismissed the install prompt');
-      }
-      setDeferredPrompt(null);
-      setShowButton(false);
-    });
+    if (deferredPrompt) {
+      // Android PWA install
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('✅ User accepted the install prompt');
+        } else {
+          console.log('❌ User dismissed the install prompt');
+        }
+        setDeferredPrompt(null);
+      });
+    } else if (isIOS) {
+      // iOS fallback
+      alert(
+        '📱 To install this app:\n\n1. Tap the Share icon in Safari\n2. Then select "Add to Home Screen".'
+      );
+    } else {
+      alert('⚠️ Installation not supported on this device or browser.');
+    }
   };
 
-  // ✅ iOS fallback instructions
-  if (isIOS && !isInStandaloneMode) {
-    return (
-      <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded mt-4 text-sm max-w-sm">
-        📱 To install this app, tap the <strong>Share</strong> button and then select <strong>Add to Home Screen</strong>.
-      </div>
-    );
-  }
-
-  // ✅ Android install button
-  if (!showButton) return null;
+  // ✅ Hide if not on mobile or already installed
+  if (!isMobile || isStandalone) return null;
 
   return (
     <button
       onClick={handleInstallClick}
-      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow mt-4"
+      className="fixed bottom-4 left-4 right-4 mx-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg z-50 w-fit text-sm sm:text-base"
     >
       📥 Download App
     </button>
